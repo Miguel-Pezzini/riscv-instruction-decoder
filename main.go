@@ -8,9 +8,23 @@ import (
 	"strconv"
 )
 
+const (
+	OpRType  = 0x33
+	OpIType1 = 0x13
+	OpIType2 = 0x03
+	OpIType3 = 0x67
+	OpIType4 = 0x73
+	OpSType  = 0x23
+	OpBType  = 0x63
+	OpUType1 = 0x37
+	OpUType2 = 0x17
+	OpJType  = 0x6F
+)
+
 type Instruction interface {
 	Encode() uint32
 	String() string
+	Decode(inst uint32) Instruction
 }
 
 type RType struct {
@@ -58,60 +72,80 @@ type JType struct {
 	Imm    uint32 // 20 bits
 }
 
-func DecodeRType(inst uint32) RType {
-	r := RType{
-		Opcode: uint8(inst & 0x7F),         // bits 0-6
-		Rd:     uint8((inst >> 7) & 0x1F),  // bits 7-11
-		Funct3: uint8((inst >> 12) & 0x7),  // bits 12-14
-		Rs1:    uint8((inst >> 15) & 0x1F), // bits 15-19
-		Rs2:    uint8((inst >> 20) & 0x1F), // bits 20-24
-		Funct7: uint8((inst >> 25) & 0x7F), // bits 25-31
-	}
+func (r *RType) Encode() uint32 {
+	var inst uint32
+	inst |= uint32(r.Opcode & 0x7F)
+	inst |= uint32(r.Rd&0x1F) << 7
+	inst |= uint32(r.Funct3&0x7) << 12
+	inst |= uint32(r.Rs1&0x1F) << 15
+	inst |= uint32(r.Rs2&0x1F) << 20
+	inst |= uint32(r.Funct7&0x7F) << 25
+	return inst
+}
+
+func (r *RType) Decode(inst uint32) Instruction {
+	r.Opcode = uint8(inst & 0x7F)
+	r.Rd = uint8((inst >> 7) & 0x1F)
+	r.Funct3 = uint8((inst >> 12) & 0x7)
+	r.Rs1 = uint8((inst >> 15) & 0x1F)
+	r.Rs2 = uint8((inst >> 20) & 0x1F)
+	r.Funct7 = uint8((inst >> 25) & 0x7F)
 	return r
 }
 
-func DecodeIType(inst uint32) IType {
-	i := IType{
-		OpCode: uint8(inst & 0x7F),           // bits 0-6
-		Rd:     uint8((inst >> 7) & 0x1F),    // bits 7-11
-		Funct3: uint8((inst >> 12) & 0x7),    // bits 12-14
-		Rs1:    uint8((inst >> 15) & 0x1F),   // bits 15-19
-		Imm:    uint16((inst >> 20) & 0xFFF), // bits 20-31
-	}
+func (r *RType) String() string {
+	return fmt.Sprintf("RType {opcode=%02X, rd=%d, funct3=%d, rs1=%d, rs2=%d, funct7=%d}",
+		r.Opcode, r.Rd, r.Funct3, r.Rs1, r.Rs2, r.Funct7)
+}
+
+func (i *IType) Encode() uint32 {
+	var inst uint32
+	inst |= uint32(i.OpCode & 0x7F)
+	inst |= uint32(i.Rd&0x1F) << 7
+	inst |= uint32(i.Funct3&0x7) << 12
+	inst |= uint32(i.Rs1&0x1F) << 15
+	inst |= uint32(i.Imm&0xFFF) << 20
+	return inst
+}
+
+func (i *IType) Decode(inst uint32) Instruction {
+	i.OpCode = uint8(inst & 0x7F)
+	i.Rd = uint8((inst >> 7) & 0x1F)
+	i.Funct3 = uint8((inst >> 12) & 0x7)
+	i.Rs1 = uint8((inst >> 15) & 0x1F)
+	i.Imm = uint16((inst >> 20) & 0xFFF)
 	return i
 }
 
+func (i *IType) String() string {
+	return fmt.Sprintf("IType {opcode=%02X, rd=%d, funct3=%d, rs1=%d, imm=%d}",
+		i.OpCode, i.Rd, i.Funct3, i.Rs1, i.Imm)
+}
+
+func DecodeInstruction(inst uint32) Instruction {
+	op := uint8(inst & 0x7F)
+
+	switch op {
+	case OpRType: // R-type
+		return new(RType).Decode(inst)
+	case OpIType1, OpIType2, OpIType3, OpIType4: // I-type
+		return new(IType).Decode(inst)
+	// case 0x23: return new(SType).Decode(inst)
+	// case 0x63: return new(BType).Decode(inst)
+	// case 0x37, 0x17: return new(UType).Decode(inst)
+	// case 0x6F: return new(JType).Decode(inst)
+	default:
+		return nil
+	}
+}
+
 func DecodeInstructionFromUInt32(encodedInstructions []uint32) {
-	for _, v := range encodedInstructions {
-		checkOpCode := uint8(v & 0x7F)
-
-		switch checkOpCode {
-		case 0x33: // R-type
-			r := DecodeRType(v)
-			fmt.Printf("R-Type: %+v\n", r)
-
-		case 0x13, 0x03, 0x67, 0x73: // I-type
-			i := DecodeIType(v)
-			fmt.Printf("I-Type: %+v\n", i)
-
-		case 0x23: // S-type
-			// s := DecodeSType(v)
-			fmt.Printf("S-Type opcode %02X ainda não implementado\n", checkOpCode)
-
-		case 0x63: // B-type
-			// b := DecodeBType(v)
-			fmt.Printf("B-Type opcode %02X ainda não implementado\n", checkOpCode)
-
-		case 0x37, 0x17: // U-type
-			// u := DecodeUType(v)
-			fmt.Printf("U-Type opcode %02X ainda não implementado\n", checkOpCode)
-
-		case 0x6F: // J-type
-			// j := DecodeJType(v)
-			fmt.Printf("J-Type opcode %02X ainda não implementado\n", checkOpCode)
-
-		default:
-			fmt.Printf("Opcode %02X não reconhecido\n", checkOpCode)
+	for _, inst := range encodedInstructions {
+		decoded := DecodeInstruction(inst)
+		if decoded != nil {
+			fmt.Println(decoded.String())
+		} else {
+			fmt.Printf("Opcode %02X não reconhecido\n", inst&0x7F)
 		}
 	}
 }
@@ -174,5 +208,4 @@ func main() {
 
 	DecodeInstructionFromUInt32(instructionsFromBinaryFile)
 	DecodeInstructionFromUInt32(instructionsFromHexFile)
-
 }

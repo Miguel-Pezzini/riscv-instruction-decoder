@@ -31,14 +31,14 @@ func TestDecodeInstruction(t *testing.T) {
 	for _, tt := range hexTests {
 		got := DecodeInstruction(tt.input)
 		if !reflect.DeepEqual(got, tt.expected) {
-			t.Errorf("HEX 0x%08X: esperado %+v, obtido %+v", tt.input, tt.expected, got)
+			t.Errorf("HEX 0x%08X: expected %+v, received %+v", tt.input, tt.expected, got)
 		}
 	}
 
 	for _, tt := range binTests {
 		got := DecodeInstruction(tt.input)
 		if !reflect.DeepEqual(got, tt.expected) {
-			t.Errorf("BIN %032b: esperado %+v, obtido %+v", tt.input, tt.expected, got)
+			t.Errorf("BIN %032b: expected %+v, received %+v", tt.input, tt.expected, got)
 		}
 	}
 }

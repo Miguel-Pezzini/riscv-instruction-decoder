@@ -27,8 +27,8 @@ type Instruction interface {
 }
 
 type RawInstruction struct {
-    Original string 
-    Value    uint32 
+	Origin string
+	Value  uint32
 }
 
 type RType struct {
@@ -141,7 +141,7 @@ func (b *BType) String() string {
 func (u *UType) Decode(inst uint32) Instruction {
 	u.Opcode = uint8(inst & 0x7F)
 	u.Rd = uint8((inst >> 7) & 0x1F)
-	u.Imm = uint32(inst >> 12) & 0xFFFFF
+	u.Imm = uint32(inst>>12) & 0xFFFFF
 	return u
 }
 
@@ -153,11 +153,10 @@ func (u *UType) String() string {
 func (j *JType) Decode(inst uint32) Instruction {
 	j.Opcode = uint8(inst & 0x7F)
 	j.Rd = uint8((inst >> 7) & 0x1F)
-	j.Imm = uint32(inst >> 12) & 0xFFFFF
+	j.Imm = uint32(inst>>12) & 0xFFFFF
 
 	return j
 }
-
 
 func (j *JType) String() string {
 	return fmt.Sprintf("formato = J {opcode=%02X, rd=%d, imm=%d}",
@@ -185,12 +184,11 @@ func DecodeInstruction(inst uint32) Instruction {
 	}
 }
 
-
 func DecodeInstructionFromUInt32(encodedInstructions []RawInstruction) {
 	for _, inst := range encodedInstructions {
 		decoded := DecodeInstruction(inst.Value)
 		if decoded != nil {
-			fmt.Printf("instrucao %s -> %s\n", inst.Original, decoded.String())
+			fmt.Printf("instrução %s -> %s\n", inst.Origin, decoded.String())
 		} else {
 			fmt.Printf("Opcode %02X não reconhecido\n", inst.Value&0x7F)
 		}
@@ -214,8 +212,8 @@ func DecodeFromBinaryFile() []RawInstruction {
 			panic(err)
 		}
 		instructions = append(instructions, RawInstruction{
-			Original: row,
-			Value:    uint32(num),
+			Origin: row,
+			Value:  uint32(num),
 		})
 	}
 
@@ -239,8 +237,8 @@ func DecodeFromHexFile() []RawInstruction {
 			panic(err)
 		}
 		instructions = append(instructions, RawInstruction{
-			Original: row,
-			Value:    uint32(num),
+			Origin: row,
+			Value:  uint32(num),
 		})
 	}
 

@@ -21,6 +21,16 @@ const (
 	OpJType  = 0x6F
 )
 
+const (
+	FORMAT_BIN = "bin"
+	FORMAT_HEX = "hex"
+)
+
+const (
+	BIN_INSTRUCTION_FILE_NAME = "fib_rec_binario.txt"
+	HEX_INSTRUCTION_FILE_NAME = "fib_rec_hexadecimal.txt"
+)
+
 type Instruction interface {
 	String() string
 	Decode(inst uint32) Instruction
@@ -195,9 +205,10 @@ func DecodeInstructionFromUInt32(encodedInstructions []RawInstruction) {
 	}
 }
 
-func DecodeFromBinaryFile() []RawInstruction {
+func DecodeFromFile(filePath string, format string) []RawInstruction {
 	var instructions []RawInstruction
-	file, err := os.Open("fib_rec_binario.txt")
+
+	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatalf("erro ao abrir arquivo: %v", err)
 	}
@@ -205,34 +216,19 @@ func DecodeFromBinaryFile() []RawInstruction {
 
 	scanner := bufio.NewScanner(file)
 
-	for scanner.Scan() {
-		row := scanner.Text()
-		num, err := strconv.ParseUint(row, 2, 32)
-		if err != nil {
-			panic(err)
-		}
-		instructions = append(instructions, RawInstruction{
-			Origin: row,
-			Value:  uint32(num),
-		})
+	var base int
+	switch format {
+	case FORMAT_BIN:
+		base = 2
+	case FORMAT_HEX:
+		base = 16
+	default:
+		log.Fatalf("formato inválido: %s (use 'bin' ou 'hex')", format)
 	}
-
-	return instructions
-}
-
-func DecodeFromHexFile() []RawInstruction {
-	var instructions []RawInstruction
-	file, err := os.Open("fib_rec_hexadecimal.txt")
-	if err != nil {
-		log.Fatalf("erro ao abrir arquivo: %v", err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
 		row := scanner.Text()
-		num, err := strconv.ParseUint(row, 16, 32)
+		num, err := strconv.ParseUint(row, base, 32)
 		if err != nil {
 			panic(err)
 		}
@@ -246,8 +242,8 @@ func DecodeFromHexFile() []RawInstruction {
 }
 
 func main() {
-	var instructionsFromBinaryFile []RawInstruction = DecodeFromBinaryFile()
-	var instructionsFromHexFile []RawInstruction = DecodeFromHexFile()
+	instructionsFromBinaryFile := DecodeFromFile(BIN_INSTRUCTION_FILE_NAME, FORMAT_BIN)
+	instructionsFromHexFile := DecodeFromFile(HEX_INSTRUCTION_FILE_NAME, FORMAT_HEX)
 
 	DecodeInstructionFromUInt32(instructionsFromBinaryFile)
 	DecodeInstructionFromUInt32(instructionsFromHexFile)

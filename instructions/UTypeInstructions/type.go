@@ -23,3 +23,10 @@ func (u *Type) String() string {
 	return fmt.Sprintf("formato = U {opcode=%02X, rd=%d, imm=%d}",
 		u.Opcode, u.Rd, u.Imm)
 }
+
+func (u *Type) GetRegisterUsage() isa.RegisterUsage {
+	return isa.RegisterUsage{
+		ReadRegs:  nil,
+		WriteRegs: []uint8{u.Rd},
+	}
+}

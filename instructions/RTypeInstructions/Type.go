@@ -39,3 +39,10 @@ func (r *Type) findInstruction(funct3 uint8, funct7 uint8) isa.Instruction {
 
 	return r
 }
+
+func (r *Type) GetRegisterUsage() isa.RegisterUsage {
+	return isa.RegisterUsage{
+		ReadRegs:  []uint8{r.Rs1, r.Rs2},
+		WriteRegs: []uint8{r.Rd},
+	}
+}

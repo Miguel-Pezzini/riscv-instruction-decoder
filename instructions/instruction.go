@@ -16,6 +16,11 @@ const (
 
 var stages = []Stage{IF, ID, EX, MEM, WB}
 
+type RegisterUsage struct {
+	ReadRegs  []uint8
+	WriteRegs []uint8
+}
+
 type Instruction interface {
 	String() string
 	Decode(inst uint32) Instruction
@@ -24,6 +29,7 @@ type Instruction interface {
 	ExecuteOperation()
 	ExecuteAccessOperand()
 	ExecuteWriteBack()
+	GetRegisterUsage() RegisterUsage
 }
 
 type BaseInstruction struct{}

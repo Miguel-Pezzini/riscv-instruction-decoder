@@ -2,7 +2,7 @@ package ITypeInstructions
 
 import (
 	"fmt"
-	isa "riscv-instruction-encoder/instructions"
+	isa "riscv-instruction-encoder/pkg/isa"
 )
 
 // Definição de opcodes como constantes

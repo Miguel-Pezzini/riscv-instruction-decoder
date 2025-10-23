@@ -14,7 +14,7 @@ const (
 	WB  Stage = "WB"
 )
 
-var stages = []Stage{IF, ID, EX, MEM, WB}
+var Stages = []Stage{IF, ID, EX, MEM, WB}
 
 type RegisterUsage struct {
 	ReadRegs  []uint8
@@ -49,7 +49,7 @@ type RawInstruction struct {
 	Value  uint32
 }
 
-func executeStage(stage Stage, instruction Instruction) {
+func ExecuteStage(stage Stage, instruction Instruction) {
 	switch stage {
 	case IF:
 		instruction.ExecuteFetchInstruction()
@@ -63,22 +63,5 @@ func executeStage(stage Stage, instruction Instruction) {
 		instruction.ExecuteWriteBack()
 	default:
 		fmt.Printf("Stage not defined")
-	}
-}
-
-func Execute(instructions []Instruction) {
-	numStages := len(stages)
-	numInstr := len(instructions)
-	totalCycles := numInstr + numStages - 1
-	for cycle := 1; cycle <= totalCycles; cycle++ {
-		fmt.Printf("Ciclo %d:\n", cycle)
-
-		for i := 0; i < numInstr; i++ {
-			stageIndex := cycle - i - 1
-			if stageIndex >= 0 && stageIndex < numStages {
-				executeStage(stages[stageIndex], instructions[i])
-			}
-		}
-		fmt.Println()
 	}
 }

@@ -2,7 +2,7 @@ package JTypeInstructions
 
 import (
 	"fmt"
-	isa "riscv-instruction-encoder/instructions"
+	isa "riscv-instruction-encoder/pkg/isa"
 )
 
 const (

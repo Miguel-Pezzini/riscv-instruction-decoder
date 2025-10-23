@@ -2,7 +2,7 @@ package RTypeInstructions
 
 import (
 	"fmt"
-	isa "riscv-instruction-encoder/instructions"
+	isa "riscv-instruction-encoder/pkg/isa"
 )
 
 type Type struct {

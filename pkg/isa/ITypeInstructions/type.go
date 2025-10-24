@@ -43,6 +43,21 @@ func (i *Type) Decode(inst uint32) isa.Instruction {
 	return i.findInstruction()
 }
 
+// type InstructionMeta struct {
+// 	Name           string
+// 	OpCode         uint32
+// 	IsLoad         bool
+// 	IsStore        bool
+// 	IsBranch       bool
+// 	WritesRegister bool
+
+// 	Rs []int
+// 	Rd *int
+
+// 	ProduceStage Stage
+// 	ConsumeStage Stage
+// }
+
 func (i *Type) String() string {
 	name := i.getInstructionName()
 	return fmt.Sprintf("%s {opcode=%02X, rd=%d, funct3=%d, rs1=%d, imm=%d}",

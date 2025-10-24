@@ -21,6 +21,21 @@ type RegisterUsage struct {
 	WriteRegs []uint8
 }
 
+type InstructionMeta struct {
+	Name           string
+	OpCode         uint32
+	IsLoad         bool
+	IsStore        bool
+	IsBranch       bool
+	WritesRegister bool
+
+	Rs []int
+	Rd *int
+
+	ProduceStage Stage
+	ConsumeStage Stage
+}
+
 type Instruction interface {
 	String() string
 	Decode(inst uint32) Instruction
@@ -29,10 +44,20 @@ type Instruction interface {
 	ExecuteOperation()
 	ExecuteAccessOperand()
 	ExecuteWriteBack()
-	GetRegisterUsage() RegisterUsage
+	GetMeta() InstructionMeta
 }
 
-type BaseInstruction struct{}
+type BaseInstruction struct {
+	InstructionMeta InstructionMeta
+}
+
+func (b *BaseInstruction) GetMeta() InstructionMeta {
+	return b.InstructionMeta
+}
+
+func (b *BaseInstruction) SetMeta(i InstructionMeta) {
+	b.InstructionMeta = i
+}
 
 func (b *BaseInstruction) ExecuteFetchInstruction() {}
 

@@ -1,5 +1,5 @@
 package BTypeInstructions
 
-type bltInstruction struct {
+type BLT struct {
 	Type
 }

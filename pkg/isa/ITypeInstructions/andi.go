@@ -1,5 +1,5 @@
 package ITypeInstructions
 
-type andiInstruction struct {
+type ANDI struct {
 	Type
 }

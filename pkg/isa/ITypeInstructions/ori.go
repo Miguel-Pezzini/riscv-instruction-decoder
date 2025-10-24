@@ -1,5 +1,5 @@
 package ITypeInstructions
 
-type oriInstruction struct {
+type ORI struct {
 	Type
 }

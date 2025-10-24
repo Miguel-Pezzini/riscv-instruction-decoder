@@ -1,5 +1,5 @@
 package JTypeInstructions
 
-type jalInstruction struct {
+type JAL struct {
 	Type
 }

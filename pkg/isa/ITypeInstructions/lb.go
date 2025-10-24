@@ -1,5 +1,5 @@
 package ITypeInstructions
 
-type lbInstruction struct {
+type LB struct {
 	Type
 }

@@ -1,5 +1,5 @@
 package RTypeInstructions
 
-type AddInstruction struct {
+type ADD struct {
 	Type
 }

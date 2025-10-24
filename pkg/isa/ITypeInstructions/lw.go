@@ -1,5 +1,5 @@
 package ITypeInstructions
 
-type lwInstruction struct {
+type LW struct {
 	Type
 }

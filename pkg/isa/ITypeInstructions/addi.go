@@ -1,5 +1,5 @@
 package ITypeInstructions
 
-type addiInstruction struct {
+type ADDI struct {
 	Type
 }

@@ -1,5 +1,5 @@
 package STypeInstructions
 
-type swInstruction struct {
+type SW struct {
 	Type
 }

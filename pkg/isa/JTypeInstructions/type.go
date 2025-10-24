@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	JAL = 0x6F
+	OP_JAL = 0x6F
 )
 
 type Type struct {
@@ -38,15 +38,15 @@ func (j *Type) String() string {
 
 func (j *Type) findInstruction() isa.Instruction {
 	switch j.OpCode {
-	case JAL:
-		return &jalInstruction{*j}
+	case OP_JAL:
+		return &JAL{*j}
 	}
 	return j
 }
 
 func (j *Type) getInstructionName() string {
 	switch j.OpCode {
-	case JAL:
+	case OP_JAL:
 		return "JAL"
 	}
 	return "UNKNOWN_J"

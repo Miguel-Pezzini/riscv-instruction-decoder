@@ -34,7 +34,7 @@ func (r *Type) String() string {
 func (r *Type) findInstruction(funct3 uint8, funct7 uint8) isa.Instruction {
 	switch {
 	case funct7 == 0x00 && funct3 == 0x00:
-		return &AddInstruction{Type: *r}
+		return &ADD{Type: *r}
 	}
 
 	return r

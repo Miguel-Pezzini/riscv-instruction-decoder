@@ -1,5 +1,5 @@
 package ITypeInstructions
 
-type jalrInstruction struct {
+type JALR struct {
 	Type
 }

@@ -7,9 +7,9 @@ import (
 
 // Definição de opcodes como constantes
 const (
-	OP_IMM = 0x13 // ADDI, ORI, ANDI, etc.
-	LOAD   = 0x03 // LB, LW, etc.
-	JALR   = 0x67
+	OP_IMM  = 0x13 // ADDI, ORI, ANDI, etc.
+	OP_LOAD = 0x03 // LB, LW, etc.
+	OP_JALR = 0x67
 )
 
 // Definição de funct3 para OP_IMM
@@ -60,14 +60,14 @@ func (i *Type) getInstructionName() string {
 		case FUNCT3_ANDI:
 			return "ANDI"
 		}
-	case LOAD:
+	case OP_LOAD:
 		switch i.Funct3 {
 		case FUNCT3_LB:
 			return "LB"
 		case FUNCT3_LW:
 			return "LW"
 		}
-	case JALR:
+	case OP_JALR:
 		return "JALR"
 	}
 	return "UNKNOWN_I"
@@ -78,21 +78,21 @@ func (i *Type) findInstruction() isa.Instruction {
 	case OP_IMM:
 		switch i.Funct3 {
 		case FUNCT3_ADDI:
-			return &addiInstruction{*i}
+			return &ADDI{*i}
 		case FUNCT3_ORI:
-			return &oriInstruction{*i}
+			return &ORI{*i}
 		case FUNCT3_ANDI:
-			return &andiInstruction{*i}
+			return &ANDI{*i}
 		}
-	case LOAD:
+	case OP_LOAD:
 		switch i.Funct3 {
 		case FUNCT3_LW:
-			return &lwInstruction{*i}
+			return &LW{*i}
 		case FUNCT3_LB:
-			return &lbInstruction{*i}
+			return &LB{*i}
 		}
-	case JALR:
-		return &jalrInstruction{*i}
+	case OP_JALR:
+		return &JALR{*i}
 	}
 	return i
 }

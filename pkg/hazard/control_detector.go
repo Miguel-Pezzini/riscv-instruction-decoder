@@ -21,7 +21,7 @@ func HasControlHazard(currentInstruction isa.PipelineInstruction, executing []*i
 }
 
 func hasBranchRAWHazard(currentInstruction isa.PipelineInstruction, executing []*isa.PipelineInstruction, forwarding bool) bool {
-	meta := currentInstruction.Instruction.GetMeta()
+	currMeta := currentInstruction.Instruction.GetMeta()
 
 	for _, prev := range executing {
 		prevMeta := prev.Instruction.GetMeta()
@@ -30,18 +30,17 @@ func hasBranchRAWHazard(currentInstruction isa.PipelineInstruction, executing []
 			continue
 		}
 
-		for _, rs := range meta.Rs {
+		for _, rs := range currMeta.Rs {
 			if rs == *prevMeta.Rd {
-				cyclesToConsume := int(meta.ConsumeStage) - currentInstruction.CurrentStage
-
+				cyclesToConsume := int(currMeta.ConsumeStage) - currentInstruction.CurrentStage
 				if !forwarding {
 					cyclesToProduce := int(isa.WB) - prev.CurrentStage
-					if cyclesToProduce >= 0 && cyclesToConsume >= 0 && cyclesToProduce <= cyclesToConsume {
+					if cyclesToProduce >= 0 && cyclesToConsume >= 0 && cyclesToProduce > cyclesToConsume {
 						return true
 					}
 				} else {
 					cyclesToProduce := int(prevMeta.ProduceStage) - prev.CurrentStage
-					if cyclesToProduce >= 0 && cyclesToConsume >= 0 && cyclesToProduce < cyclesToConsume {
+					if cyclesToProduce >= 0 && cyclesToConsume >= 0 && cyclesToProduce > cyclesToConsume {
 						return true
 					}
 				}

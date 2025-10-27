@@ -11,6 +11,7 @@ func HasDataHazard(currentInstruction isa.PipelineInstruction, executing []*isa.
 	return false
 }
 
+// Read after Write Hazard detection
 func isRAWHazard(currentInstruction isa.PipelineInstruction, previousInstruction isa.PipelineInstruction, forwarding bool) bool {
 	currMeta := currentInstruction.Instruction.GetMeta()
 	prevMeta := previousInstruction.Instruction.GetMeta()
@@ -22,16 +23,14 @@ func isRAWHazard(currentInstruction isa.PipelineInstruction, previousInstruction
 	for _, rs := range currMeta.Rs {
 		if rs == *prevMeta.Rd {
 			cyclesToConsume := int(currMeta.ConsumeStage) - currentInstruction.CurrentStage
+			var cyclesToProduce int
 			if !forwarding {
-				cyclesToProduce := int(isa.WB) - previousInstruction.CurrentStage
-				if cyclesToProduce >= 0 && cyclesToConsume >= 0 && cyclesToProduce <= cyclesToConsume {
-					return true
-				}
+				cyclesToProduce = int(isa.WB) - previousInstruction.CurrentStage
 			} else {
-				cyclesToProduce := int(prevMeta.ProduceStage) - previousInstruction.CurrentStage
-				if cyclesToProduce >= 0 && cyclesToConsume >= 0 && cyclesToProduce < cyclesToConsume {
-					return true
-				}
+				cyclesToProduce = int(prevMeta.ProduceStage) - previousInstruction.CurrentStage
+			}
+			if cyclesToProduce >= 0 && cyclesToConsume >= 0 && cyclesToProduce > cyclesToConsume {
+				return true
 			}
 		}
 	}
@@ -39,6 +38,7 @@ func isRAWHazard(currentInstruction isa.PipelineInstruction, previousInstruction
 	return false
 }
 
+// Write after Read Hazard detection
 func isWARHazard(prevInstruction, currInstruction isa.PipelineInstruction, forwarding bool) bool {
 	prevMeta := prevInstruction.Instruction.GetMeta()
 	currMeta := currInstruction.Instruction.GetMeta()
@@ -49,20 +49,15 @@ func isWARHazard(prevInstruction, currInstruction isa.PipelineInstruction, forwa
 
 	for _, rs := range prevMeta.Rs {
 		if rs == *currMeta.Rd {
-			var cyclesToWrite, cyclesToRead int
-
+			var cyclesToWrite int
+			cyclesToRead := int(prevMeta.ConsumeStage) - prevInstruction.CurrentStage
 			if !forwarding {
 				cyclesToWrite = int(isa.WB) - currInstruction.CurrentStage
-				cyclesToRead = int(prevMeta.ConsumeStage) - prevInstruction.CurrentStage
-				if cyclesToWrite >= 0 && cyclesToRead >= 0 && cyclesToWrite <= cyclesToRead {
-					return true
-				}
 			} else {
 				cyclesToWrite = int(currMeta.ProduceStage) - currInstruction.CurrentStage
-				cyclesToRead = int(prevMeta.ConsumeStage) - prevInstruction.CurrentStage
-				if cyclesToWrite >= 0 && cyclesToRead >= 0 && cyclesToWrite < cyclesToRead {
-					return true
-				}
+			}
+			if cyclesToWrite >= 0 && cyclesToRead >= 0 && cyclesToRead < cyclesToWrite {
+				return true
 			}
 		}
 	}

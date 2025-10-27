@@ -4,14 +4,14 @@ import (
 	"fmt"
 )
 
-type Stage string
+type Stage int
 
 const (
-	IF  Stage = "IF"
-	ID  Stage = "ID"
-	EX  Stage = "EX"
-	MEM Stage = "MEM"
-	WB  Stage = "WB"
+	IF  Stage = 1
+	ID  Stage = 2
+	EX  Stage = 3
+	MEM Stage = 4
+	WB  Stage = 5
 )
 
 var Stages = []Stage{IF, ID, EX, MEM, WB}
@@ -45,6 +45,14 @@ type Instruction interface {
 	ExecuteAccessOperand()
 	ExecuteWriteBack()
 	GetMeta() InstructionMeta
+}
+
+type PipelineInstruction struct {
+	Id           int
+	Instruction  Instruction
+	CurrentStage int
+	HasCompleted bool
+	HasStarted   bool
 }
 
 type BaseInstruction struct {

@@ -1,38 +1,41 @@
 package hazard
 
-import (
-	"riscv-instruction-encoder/pkg/isa"
-)
+import "riscv-instruction-encoder/pkg/isa"
 
-type HazardType string
+func HasDataHazard(currentInstruction isa.PipelineInstruction, executing []isa.PipelineInstruction, forwarding bool) bool {
+	currMeta := currentInstruction.Instruction.GetMeta()
 
-const (
-	HazardRAW     HazardType = "RAW"
-	HazardWAW     HazardType = "WAW"
-	HazardWAR     HazardType = "WAR"
-	HazardControl HazardType = "CONTROL"
-)
+	for _, prev := range executing {
+		if !prev.HasStarted || prev.HasCompleted {
+			continue
+		}
 
-type Hazard struct {
-	Type         HazardType
-	From         int    // index of producer / earlier instruction
-	To           int    // index of consumer / later instruction
-	Reg          uint8  // register involved (0 if none)
-	Description  string // human readable
-	StallsNeeded int    // recommended number of NOPs to insert before To
-}
+		prevMeta := prev.Instruction.GetMeta()
+		if !prevMeta.WritesRegister || prevMeta.Rd == nil {
+			continue
+		}
 
-// Nop representa instrução de bolha (no-op)
-type Nop struct{}
+		for _, rs := range currMeta.Rs {
+			if rs == *prevMeta.Rd {
+				if !forwarding {
+					cyclesToProduce := int(isa.WB) - prev.CurrentStage
+					cyclesToConsume := int(currMeta.ConsumeStage) - currentInstruction.CurrentStage
 
-func (n *Nop) String() string                     { return "NOP" }
-func (n *Nop) Decode(inst uint32) isa.Instruction { return n }
-func (n *Nop) GetMeta() isa.InstructionMeta       { return isa.InstructionMeta{} }
-func (n *Nop) ExecuteFetchInstruction()           {}
-func (n *Nop) ExecuteDecodeInstruction()          {}
-func (n *Nop) ExecuteOperation()                  {}
-func (n *Nop) ExecuteAccessOperand()              {}
-func (n *Nop) ExecuteWriteBack()                  {}
-func (n *Nop) GetRegisterUsage() isa.RegisterUsage {
-	return isa.RegisterUsage{ReadRegs: []uint8{}, WriteRegs: []uint8{}}
+					if cyclesToProduce >= 0 && cyclesToConsume >= 0 && cyclesToProduce <= cyclesToConsume {
+						return true
+					}
+					return true
+				}
+
+				cyclesToProduce := int(prevMeta.ProduceStage) - prev.CurrentStage
+				cyclesToConsume := int(currMeta.ConsumeStage) - currentInstruction.CurrentStage
+
+				if cyclesToProduce >= 0 && cyclesToConsume >= 0 && cyclesToProduce < cyclesToConsume {
+					return true
+				}
+
+			}
+		}
+	}
+	return false
 }

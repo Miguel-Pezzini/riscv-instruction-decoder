@@ -25,6 +25,10 @@ const (
 	FUNCT3_LW = 0x2
 )
 
+func intPtr(v int) *int {
+	return &v
+}
+
 type Type struct {
 	isa.BaseInstruction
 	OpCode uint8  // 7 bits
@@ -43,49 +47,9 @@ func (i *Type) Decode(inst uint32) isa.Instruction {
 	return i.findInstruction()
 }
 
-// type InstructionMeta struct {
-// 	Name           string
-// 	OpCode         uint32
-// 	IsLoad         bool
-// 	IsStore        bool
-// 	IsBranch       bool
-// 	WritesRegister bool
-
-// 	Rs []int
-// 	Rd *int
-
-// 	ProduceStage Stage
-// 	ConsumeStage Stage
-// }
-
 func (i *Type) String() string {
-	name := i.getInstructionName()
 	return fmt.Sprintf("%s {opcode=%02X, rd=%d, funct3=%d, rs1=%d, imm=%d}",
-		name, i.OpCode, i.Rd, i.Funct3, i.Rs1, i.Imm)
-}
-
-func (i *Type) getInstructionName() string {
-	switch i.OpCode {
-	case OP_IMM:
-		switch i.Funct3 {
-		case FUNCT3_ADDI:
-			return "ADDI"
-		case FUNCT3_ORI:
-			return "ORI"
-		case FUNCT3_ANDI:
-			return "ANDI"
-		}
-	case OP_LOAD:
-		switch i.Funct3 {
-		case FUNCT3_LB:
-			return "LB"
-		case FUNCT3_LW:
-			return "LW"
-		}
-	case OP_JALR:
-		return "JALR"
-	}
-	return "UNKNOWN_I"
+		i.InstructionMeta.Name, i.OpCode, i.Rd, i.Funct3, i.Rs1, i.Imm)
 }
 
 func (i *Type) findInstruction() isa.Instruction {
@@ -93,7 +57,7 @@ func (i *Type) findInstruction() isa.Instruction {
 	case OP_IMM:
 		switch i.Funct3 {
 		case FUNCT3_ADDI:
-			return &ADDI{*i}
+			return NewADDI(*i)
 		case FUNCT3_ORI:
 			return &ORI{*i}
 		case FUNCT3_ANDI:
@@ -121,21 +85,21 @@ func (i *Type) GetRegisterUsage() isa.RegisterUsage {
 
 // Stages
 func (t *Type) ExecuteFetchInstruction() {
-	fmt.Printf("[IF ] Fetching instruction: %s\n", t.getInstructionName())
+	fmt.Printf("[IF ] Fetching instruction: %s\n", t.InstructionMeta.Name)
 }
 
 func (t *Type) ExecuteDecodeInstruction() {
-	fmt.Printf("[ID ] Decoding instruction: %s\n", t.getInstructionName())
+	fmt.Printf("[ID ] Decoding instruction: %s\n", t.InstructionMeta.Name)
 }
 
 func (t *Type) ExecuteOperation() {
-	fmt.Printf("[EX ] Executing operation for instruction: %s\n", t.getInstructionName())
+	fmt.Printf("[EX ] Executing operation for instruction: %s\n", t.InstructionMeta.Name)
 }
 
 func (t *Type) ExecuteAccessOperand() {
-	fmt.Printf("[MEM] Accessing operands/memory for instruction: %s\n", t.getInstructionName())
+	fmt.Printf("[MEM] Accessing operands/memory for instruction: %s\n", t.InstructionMeta.Name)
 }
 
 func (t *Type) ExecuteWriteBack() {
-	fmt.Printf("[WB ] Writing back result of instruction: %s\n", t.getInstructionName())
+	fmt.Printf("[WB ] Writing back result of instruction: %s\n", t.InstructionMeta.Name)
 }

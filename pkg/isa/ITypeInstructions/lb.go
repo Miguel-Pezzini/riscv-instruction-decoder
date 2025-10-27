@@ -1,4 +1,4 @@
-package ITypeInstructions
+package itype
 
 import isa "riscv-instruction-encoder/pkg/isa"
 
@@ -6,7 +6,7 @@ type LB struct {
 	Type
 }
 
-func NewLB(t Type) *LB {
+func newLB(t Type) *LB {
 	inst := &LB{Type: t}
 	inst.InstructionMeta = isa.InstructionMeta{
 		Name:           "LB",
@@ -15,6 +15,7 @@ func NewLB(t Type) *LB {
 		IsStore:        false,
 		IsBranch:       false,
 		WritesRegister: true,
+		ReadsRegister:  true,
 		Rs:             []int{int(t.Rs1)},
 		Rd:             intPtr(int(t.Rd)),
 		ProduceStage:   isa.MEM,

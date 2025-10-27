@@ -65,14 +65,6 @@ func (s *Type) findInstruction() isa.Instruction {
 	return s
 }
 
-func (s *Type) GetRegisterUsage() isa.RegisterUsage {
-	// S-type lê Rs1 e Rs2, não escreve
-	return isa.RegisterUsage{
-		ReadRegs:  []uint8{s.Rs1, s.Rs2},
-		WriteRegs: []uint8{},
-	}
-}
-
 // Pipeline stages
 func (s *Type) ExecuteFetchInstruction() {
 	fmt.Printf("[IF ] Fetching instruction: %s\n", s.getInstructionName())

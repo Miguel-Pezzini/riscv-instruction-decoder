@@ -1,4 +1,4 @@
-package ITypeInstructions
+package itype
 
 import isa "riscv-instruction-encoder/pkg/isa"
 
@@ -15,6 +15,7 @@ func NewANDI(t Type) *ANDI {
 		IsStore:        false,
 		IsBranch:       false,
 		WritesRegister: true,
+		ReadsRegister:  true,
 		Rs:             []int{int(t.Rs1)},
 		Rd:             intPtr(int(t.Rd)),
 		ProduceStage:   isa.EX,

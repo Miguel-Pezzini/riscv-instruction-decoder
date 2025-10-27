@@ -7,7 +7,7 @@ import (
 	"os"
 	"riscv-instruction-encoder/pkg/isa"
 	"riscv-instruction-encoder/pkg/isa/BTypeInstructions"
-	"riscv-instruction-encoder/pkg/isa/ITypeInstructions"
+	itype "riscv-instruction-encoder/pkg/isa/ITypeInstructions"
 	"riscv-instruction-encoder/pkg/isa/JTypeInstructions"
 	"riscv-instruction-encoder/pkg/isa/RTypeInstructions"
 	"riscv-instruction-encoder/pkg/isa/STypeInstructions"
@@ -40,7 +40,7 @@ func DecodeInstruction(inst uint32) isa.Instruction {
 	case OpRType:
 		return new(RTypeInstructions.Type).Decode(inst)
 	case OpIType1, OpIType2, OpIType3, OpIType4:
-		return new(ITypeInstructions.Type).Decode(inst)
+		return new(itype.Type).Decode(inst)
 	case OpSType:
 		return new(STypeInstructions.Type).Decode(inst)
 	case OpBType:

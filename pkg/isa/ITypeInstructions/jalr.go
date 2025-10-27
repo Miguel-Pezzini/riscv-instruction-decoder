@@ -1,4 +1,4 @@
-package ITypeInstructions
+package itype
 
 import isa "riscv-instruction-encoder/pkg/isa"
 
@@ -6,7 +6,7 @@ type JALR struct {
 	Type
 }
 
-func NewJALR(t Type) *JALR {
+func newJALR(t Type) *JALR {
 	inst := &JALR{Type: t}
 	inst.InstructionMeta = isa.InstructionMeta{
 		Name:           "JALR",
@@ -15,6 +15,7 @@ func NewJALR(t Type) *JALR {
 		IsStore:        false,
 		IsBranch:       true, // é um salto
 		WritesRegister: true, // grava o PC+4 em Rd
+		ReadsRegister:  true,
 		Rs:             []int{int(t.Rs1)},
 		Rd:             intPtr(int(t.Rd)),
 		ProduceStage:   isa.EX, // calcula destino no EX

@@ -28,6 +28,7 @@ type InstructionMeta struct {
 	IsStore        bool
 	IsBranch       bool
 	WritesRegister bool
+	ReadsRegister  bool
 
 	Rs []int
 	Rd *int

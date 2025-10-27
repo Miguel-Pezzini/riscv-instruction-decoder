@@ -1,4 +1,4 @@
-package ITypeInstructions
+package itype
 
 import isa "riscv-instruction-encoder/pkg/isa"
 
@@ -7,7 +7,7 @@ type LW struct {
 }
 
 // LW – I-type, load word
-func NewLW(t Type) *LW {
+func newLW(t Type) *LW {
 	inst := &LW{Type: t}
 	inst.InstructionMeta = isa.InstructionMeta{
 		Name:           "LW",
@@ -16,6 +16,7 @@ func NewLW(t Type) *LW {
 		IsStore:        false,
 		IsBranch:       false,
 		WritesRegister: true,
+		ReadsRegister:  true,
 		Rs:             []int{int(t.Rs1)},
 		Rd:             intPtr(int(t.Rd)),
 		ProduceStage:   isa.MEM, // o dado é produzido no estágio MEM (após acessar memória)

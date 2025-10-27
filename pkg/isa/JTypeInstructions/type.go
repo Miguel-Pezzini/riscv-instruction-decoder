@@ -16,13 +16,6 @@ type Type struct {
 	Imm    uint32 // 20 bits
 }
 
-func (j *Type) GetRegisterUsage() isa.RegisterUsage {
-	return isa.RegisterUsage{
-		ReadRegs:  nil,
-		WriteRegs: []uint8{j.Rd},
-	}
-}
-
 func (j *Type) Decode(inst uint32) isa.Instruction {
 	j.OpCode = uint8(inst & 0x7F)
 	j.Rd = uint8((inst >> 7) & 0x1F)

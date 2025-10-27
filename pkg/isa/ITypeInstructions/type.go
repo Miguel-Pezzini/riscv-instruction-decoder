@@ -1,4 +1,4 @@
-package ITypeInstructions
+package itype
 
 import (
 	"fmt"
@@ -57,30 +57,23 @@ func (i *Type) findInstruction() isa.Instruction {
 	case OP_IMM:
 		switch i.Funct3 {
 		case FUNCT3_ADDI:
-			return NewADDI(*i)
+			return newADDI(*i)
 		case FUNCT3_ORI:
-			return &ORI{*i}
+			return newORI(*i)
 		case FUNCT3_ANDI:
-			return &ANDI{*i}
+			return NewANDI(*i)
 		}
 	case OP_LOAD:
 		switch i.Funct3 {
 		case FUNCT3_LW:
-			return &LW{*i}
+			return newLW(*i)
 		case FUNCT3_LB:
-			return &LB{*i}
+			return newLB(*i)
 		}
 	case OP_JALR:
-		return &JALR{*i}
+		return newJALR(*i)
 	}
 	return i
-}
-
-func (i *Type) GetRegisterUsage() isa.RegisterUsage {
-	return isa.RegisterUsage{
-		ReadRegs:  []uint8{i.Rs1},
-		WriteRegs: []uint8{i.Rd},
-	}
 }
 
 // Stages

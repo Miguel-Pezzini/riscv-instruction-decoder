@@ -72,14 +72,6 @@ func (b *Type) String() string {
 		b.getInstructionName(), b.OpCode, b.Funct3, b.Rs1, b.Rs2, b.Imm)
 }
 
-func (b *Type) GetRegisterUsage() isa.RegisterUsage {
-	// B-type lê Rs1 e Rs2, não escreve
-	return isa.RegisterUsage{
-		ReadRegs:  []uint8{b.Rs1, b.Rs2},
-		WriteRegs: []uint8{},
-	}
-}
-
 // Pipeline stages
 func (b *Type) ExecuteFetchInstruction() {
 	fmt.Printf("[IF ] Fetching instruction: %s\n", b.getInstructionName())

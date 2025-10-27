@@ -21,5 +21,6 @@ func main() {
 	// DecodeInstructionFromUInt32(instructionsFromHexFile)
 
 	decodedInstructions := decoder.DecodeInstructionFromUInt32(instructionsFromBinaryFile)
-	runner.Run(decodedInstructions)
+	forwarding := true
+	runner.Run(decodedInstructions, forwarding)
 }

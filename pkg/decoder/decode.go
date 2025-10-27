@@ -6,12 +6,12 @@ import (
 	"log"
 	"os"
 	"riscv-instruction-encoder/pkg/isa"
-	"riscv-instruction-encoder/pkg/isa/BTypeInstructions"
-	itype "riscv-instruction-encoder/pkg/isa/ITypeInstructions"
-	"riscv-instruction-encoder/pkg/isa/JTypeInstructions"
-	"riscv-instruction-encoder/pkg/isa/RTypeInstructions"
-	"riscv-instruction-encoder/pkg/isa/STypeInstructions"
-	"riscv-instruction-encoder/pkg/isa/UTypeInstructions"
+	"riscv-instruction-encoder/pkg/isa/btype"
+	"riscv-instruction-encoder/pkg/isa/itype"
+	"riscv-instruction-encoder/pkg/isa/jtype"
+	"riscv-instruction-encoder/pkg/isa/rtype"
+	"riscv-instruction-encoder/pkg/isa/stype"
+	"riscv-instruction-encoder/pkg/isa/utype"
 	"strconv"
 )
 
@@ -38,17 +38,17 @@ func DecodeInstruction(inst uint32) isa.Instruction {
 
 	switch op {
 	case OpRType:
-		return new(RTypeInstructions.Type).Decode(inst)
+		return new(rtype.Type).Decode(inst)
 	case OpIType1, OpIType2, OpIType3, OpIType4:
 		return new(itype.Type).Decode(inst)
 	case OpSType:
-		return new(STypeInstructions.Type).Decode(inst)
+		return new(stype.Type).Decode(inst)
 	case OpBType:
-		return new(BTypeInstructions.Type).Decode(inst)
+		return new(btype.Type).Decode(inst)
 	case OpUType1, OpUType2:
-		return new(UTypeInstructions.Type).Decode(inst)
+		return new(utype.Type).Decode(inst)
 	case OpJType:
-		return new(JTypeInstructions.Type).Decode(inst)
+		return new(jtype.Type).Decode(inst)
 	default:
 		return nil
 	}

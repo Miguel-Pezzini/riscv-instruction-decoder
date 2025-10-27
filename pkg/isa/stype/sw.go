@@ -1,4 +1,4 @@
-package STypeInstructions
+package stype
 
 type SW struct {
 	Type

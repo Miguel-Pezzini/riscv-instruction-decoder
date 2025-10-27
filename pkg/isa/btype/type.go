@@ -1,4 +1,4 @@
-package BTypeInstructions
+package btype
 
 import (
 	"fmt"

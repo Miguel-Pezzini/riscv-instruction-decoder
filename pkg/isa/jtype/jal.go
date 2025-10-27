@@ -1,4 +1,4 @@
-package JTypeInstructions
+package jtype
 
 type JAL struct {
 	Type

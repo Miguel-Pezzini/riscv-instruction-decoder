@@ -1,4 +1,4 @@
-package UTypeInstructions
+package utype
 
 import (
 	"fmt"

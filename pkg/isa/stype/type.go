@@ -1,4 +1,4 @@
-package STypeInstructions
+package stype
 
 import (
 	"fmt"

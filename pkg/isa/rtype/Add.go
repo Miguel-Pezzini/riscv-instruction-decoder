@@ -1,4 +1,4 @@
-package RTypeInstructions
+package rtype
 
 type ADD struct {
 	Type

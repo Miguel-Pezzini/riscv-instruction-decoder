@@ -14,6 +14,7 @@ func newJALR(t Type) *JALR {
 		IsLoad:         false,
 		IsStore:        false,
 		IsBranch:       true, // é um salto
+		IsJump:         true,
 		WritesRegister: true, // grava o PC+4 em Rd
 		ReadsRegister:  true,
 		Rs:             []int{int(t.Rs1)},

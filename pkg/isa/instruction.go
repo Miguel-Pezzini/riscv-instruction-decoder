@@ -27,6 +27,7 @@ type InstructionMeta struct {
 	IsLoad         bool
 	IsStore        bool
 	IsBranch       bool
+	IsJump         bool
 	WritesRegister bool
 	ReadsRegister  bool
 

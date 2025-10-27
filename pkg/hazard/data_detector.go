@@ -21,15 +21,14 @@ func isRAWHazard(currentInstruction isa.PipelineInstruction, previousInstruction
 
 	for _, rs := range currMeta.Rs {
 		if rs == *prevMeta.Rd {
+			cyclesToConsume := int(currMeta.ConsumeStage) - currentInstruction.CurrentStage
 			if !forwarding {
 				cyclesToProduce := int(isa.WB) - previousInstruction.CurrentStage
-				cyclesToConsume := int(currMeta.ConsumeStage) - currentInstruction.CurrentStage
 				if cyclesToProduce >= 0 && cyclesToConsume >= 0 && cyclesToProduce <= cyclesToConsume {
 					return true
 				}
 			} else {
 				cyclesToProduce := int(prevMeta.ProduceStage) - previousInstruction.CurrentStage
-				cyclesToConsume := int(currMeta.ConsumeStage) - currentInstruction.CurrentStage
 				if cyclesToProduce >= 0 && cyclesToConsume >= 0 && cyclesToProduce < cyclesToConsume {
 					return true
 				}

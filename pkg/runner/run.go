@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"fmt"
 	"riscv-instruction-encoder/pkg/hazard"
 	"riscv-instruction-encoder/pkg/isa"
 )
@@ -75,17 +76,9 @@ func (p *Pipeline) Step() {
 		}
 	}
 
-	active := make([]*isa.PipelineInstruction, 0)
-	for _, instruction := range p.executingInstructions {
-		if !instruction.HasCompleted {
-			active = append(active, instruction)
-		}
-	}
-	p.executingInstructions = active
-
 	nextInstruction, index := p.getNextInstruction()
 	if nextInstruction != nil {
-		if hazard.HasDataHazard(*nextInstruction, p.executingInstructions, p.forwarding) {
+		if hazard.HasDataHazard(*nextInstruction, p.executingInstructions, p.forwarding) || hazard.HasControlHazard(*nextInstruction, p.executingInstructions, p.forwarding) {
 			nop := createNOP()
 			p.executingInstructions = append(p.executingInstructions, nop)
 
@@ -99,6 +92,19 @@ func (p *Pipeline) Step() {
 			p.executingInstructions = append(p.executingInstructions, nextInstruction)
 		}
 	}
+
+	for _, instruction := range p.executingInstructions {
+		isa.ExecuteStage(isa.Stage(instruction.CurrentStage), instruction.Instruction)
+	}
+	fmt.Print("\n")
+
+	active := make([]*isa.PipelineInstruction, 0)
+	for _, instruction := range p.executingInstructions {
+		if !instruction.HasCompleted {
+			active = append(active, instruction)
+		}
+	}
+	p.executingInstructions = active
 }
 
 func Run(instructions []isa.Instruction, forwarding bool) {

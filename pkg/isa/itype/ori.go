@@ -14,6 +14,7 @@ func newORI(t Type) *ORI {
 		IsLoad:         false,
 		IsStore:        false,
 		IsBranch:       false,
+		IsJump:         false,
 		WritesRegister: true,
 		ReadsRegister:  true,
 		Rs:             []int{int(t.Rs1)},

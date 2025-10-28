@@ -18,7 +18,7 @@ func newORI(t Type) *ORI {
 		WritesRegister: true,
 		ReadsRegister:  true,
 		Rs:             []int{int(t.Rs1)},
-		Rd:             intPtr(int(t.Rd)),
+		Rd:             isa.IntPtr(int(t.Rd)),
 		ProduceStage:   isa.EX,
 		ConsumeStage:   isa.ID,
 	}

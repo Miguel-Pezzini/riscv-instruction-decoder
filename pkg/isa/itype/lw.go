@@ -19,7 +19,7 @@ func newLW(t Type) *LW {
 		WritesRegister: true,
 		ReadsRegister:  true,
 		Rs:             []int{int(t.Rs1)},
-		Rd:             intPtr(int(t.Rd)),
+		Rd:             isa.IntPtr(int(t.Rd)),
 		ProduceStage:   isa.MEM, // o dado é produzido no estágio MEM (após acessar memória)
 		ConsumeStage:   isa.ID,
 	}

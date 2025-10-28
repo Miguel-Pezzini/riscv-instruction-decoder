@@ -18,7 +18,7 @@ func NewANDI(t Type) *ANDI {
 		WritesRegister: true,
 		ReadsRegister:  true,
 		Rs:             []int{int(t.Rs1)},
-		Rd:             intPtr(int(t.Rd)),
+		Rd:             isa.IntPtr(int(t.Rd)),
 		ProduceStage:   isa.EX,
 		ConsumeStage:   isa.ID,
 	}

@@ -55,6 +55,7 @@ type PipelineInstruction struct {
 	CurrentStage int
 	HasCompleted bool
 	HasStarted   bool
+	PC           int
 }
 
 type BaseInstruction struct {
@@ -82,6 +83,10 @@ func (b *BaseInstruction) ExecuteWriteBack() {}
 type RawInstruction struct {
 	Origin string
 	Value  uint32
+}
+
+func IntPtr(v int) *int {
+	return &v
 }
 
 func ExecuteStage(stage Stage, instruction Instruction) {

@@ -18,7 +18,7 @@ func newLB(t Type) *LB {
 		WritesRegister: true,
 		ReadsRegister:  true,
 		Rs:             []int{int(t.Rs1)},
-		Rd:             intPtr(int(t.Rd)),
+		Rd:             isa.IntPtr(int(t.Rd)),
 		ProduceStage:   isa.MEM,
 		ConsumeStage:   isa.ID,
 	}

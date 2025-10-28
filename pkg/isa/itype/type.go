@@ -25,10 +25,6 @@ const (
 	FUNCT3_LW = 0x2
 )
 
-func intPtr(v int) *int {
-	return &v
-}
-
 type Type struct {
 	isa.BaseInstruction
 	OpCode uint8  // 7 bits

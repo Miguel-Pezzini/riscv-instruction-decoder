@@ -23,6 +23,7 @@ func InstructionsToPipeline(instructions []isa.Instruction) []*isa.PipelineInstr
 			HasCompleted: false,
 			HasStarted:   false,
 			Id:           i + 1,
+			PC:           i * 4,
 		}
 	}
 	return pipelineInstructions
@@ -67,6 +68,30 @@ func createNOP() *isa.PipelineInstruction {
 	}
 }
 
+func (p *Pipeline) insertNOPAt(index int) {
+	nop := createNOP()
+	if index < len(p.Instructions) {
+		nop.PC = p.Instructions[index].PC
+	} else {
+		nop.PC = len(p.Instructions) * 4
+	}
+
+	p.Instructions = append(
+		p.Instructions[:index],
+		append([]*isa.PipelineInstruction{nop}, p.Instructions[index:]...)...,
+	)
+	p.executingInstructions = append(p.executingInstructions, nop)
+	for i := index + 1; i < len(p.Instructions); i++ {
+		p.Instructions[i].PC += 4
+	}
+}
+
+func (p *Pipeline) insertInstruction(instruction *isa.PipelineInstruction) {
+	instruction.HasStarted = true
+	instruction.CurrentStage = int(isa.IF)
+	p.executingInstructions = append(p.executingInstructions, instruction)
+}
+
 func (p *Pipeline) Step() {
 	for _, instruction := range p.executingInstructions {
 		instruction.CurrentStage++
@@ -79,21 +104,14 @@ func (p *Pipeline) Step() {
 	nextInstruction, index := p.getNextInstruction()
 	if nextInstruction != nil {
 		if hazard.HasDataHazard(*nextInstruction, p.executingInstructions, p.forwarding) || hazard.HasControlHazard(*nextInstruction, p.executingInstructions, p.forwarding) {
-			nop := createNOP()
-			p.executingInstructions = append(p.executingInstructions, nop)
-
-			p.Instructions = append(
-				p.Instructions[:index],
-				append([]*isa.PipelineInstruction{nop}, p.Instructions[index:]...)...,
-			)
+			p.insertNOPAt(index)
 		} else {
-			nextInstruction.HasStarted = true
-			nextInstruction.CurrentStage = int(isa.IF)
-			p.executingInstructions = append(p.executingInstructions, nextInstruction)
+			p.insertInstruction(nextInstruction)
 		}
 	}
 
 	for _, instruction := range p.executingInstructions {
+		fmt.Print(" - PC: ", instruction.PC, " | ")
 		isa.ExecuteStage(isa.Stage(instruction.CurrentStage), instruction.Instruction)
 	}
 	fmt.Print("\n")

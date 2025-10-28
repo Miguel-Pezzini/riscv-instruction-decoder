@@ -62,7 +62,7 @@ func (b *Type) getInstructionName() string {
 func (b *Type) findInstruction() isa.Instruction {
 	switch b.OpCode {
 	case BRANCH:
-		return &BLT{*b} // default para BLT, adapte se quiser outros
+		return newBLT(*b) // default para BLT, adapte se quiser outros
 	}
 	return b
 }

@@ -32,7 +32,7 @@ func (j *Type) String() string {
 func (j *Type) findInstruction() isa.Instruction {
 	switch j.OpCode {
 	case OP_JAL:
-		return &JAL{*j}
+		return newJAL(*j)
 	}
 	return j
 }

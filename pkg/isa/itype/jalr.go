@@ -18,7 +18,7 @@ func newJALR(t Type) *JALR {
 		WritesRegister: true, // grava o PC+4 em Rd
 		ReadsRegister:  true,
 		Rs:             []int{int(t.Rs1)},
-		Rd:             intPtr(int(t.Rd)),
+		Rd:             isa.IntPtr(int(t.Rd)),
 		ProduceStage:   isa.EX, // calcula destino no EX
 		ConsumeStage:   isa.ID,
 	}

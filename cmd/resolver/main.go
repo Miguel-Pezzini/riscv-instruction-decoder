@@ -13,8 +13,8 @@ const (
 )
 
 const (
-	BIN_INSTRUCTION_FILE_NAME = "../../testdata/fib_rec_binario.txt"
-	HEX_INSTRUCTION_FILE_NAME = "../../testdata/fib_rec_hexadecimal.txt"
+	BIN_INSTRUCTION_FILE_NAME = "../../testdata/bin.txt"
+	HEX_INSTRUCTION_FILE_NAME = "../../testdata/hex.txt"
 )
 
 func main() {

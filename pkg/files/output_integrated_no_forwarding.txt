@@ -1,0 +1,33 @@
+PC	Instruction
+===============================
+0x00000000	JAL {opcode=6F, rd=0, imm=19456}
+0x00000004	NOP
+0x00000008	ADDI {opcode=13, rd=2, funct3=0, rs1=2, imm=4088}
+0x0000000C	NOP
+0x00000010	SW {opcode=23, funct3=2, rs1=2, rs2=10, imm=4}
+0x00000014	SW {opcode=23, funct3=2, rs1=2, rs2=1, imm=0}
+0x00000018	ADDI {opcode=13, rd=5, funct3=0, rs1=0, imm=2}
+0x0000001C	NOP
+0x00000020	BLT {opcode=63, funct3=4, rs1=5, rs2=10, imm=24}
+0x00000024	NOP
+0x00000028	ADDI {opcode=13, rd=12, funct3=0, rs1=12, imm=1}
+0x0000002C	LW {opcode=03, rd=10, funct3=2, rs1=2, imm=4}
+0x00000030	LW {opcode=03, rd=1, funct3=2, rs1=2, imm=0}
+0x00000034	NOP
+0x00000038	ADDI {opcode=13, rd=2, funct3=0, rs1=2, imm=8}
+0x0000003C	JALR {opcode=67, rd=1, funct3=0, rs1=1, imm=0}
+0x00000040	NOP
+0x00000044	ADDI {opcode=13, rd=10, funct3=0, rs1=10, imm=4095}
+0x00000048	JAL {opcode=6F, rd=1, imm=1037823}
+0x0000004C	NOP
+0x00000050	ADDI {opcode=13, rd=10, funct3=0, rs1=10, imm=4095}
+0x00000054	JAL {opcode=6F, rd=1, imm=1035775}
+0x00000058	NOP
+0x0000005C	LW {opcode=03, rd=10, funct3=2, rs1=2, imm=4}
+0x00000060	LW {opcode=03, rd=1, funct3=2, rs1=2, imm=0}
+0x00000064	NOP
+0x00000068	ADDI {opcode=13, rd=2, funct3=0, rs1=2, imm=8}
+0x0000006C	JALR {opcode=67, rd=1, funct3=0, rs1=1, imm=0}
+0x00000070	NOP
+0x00000074	ADDI {opcode=13, rd=10, funct3=0, rs1=0, imm=8}
+0x00000078	JAL {opcode=6F, rd=1, imm=1029631}

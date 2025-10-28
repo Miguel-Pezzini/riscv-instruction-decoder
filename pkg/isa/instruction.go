@@ -56,6 +56,7 @@ type PipelineInstruction struct {
 	HasCompleted bool
 	HasStarted   bool
 	PC           int
+	OriginalPC   int
 }
 
 type BaseInstruction struct {

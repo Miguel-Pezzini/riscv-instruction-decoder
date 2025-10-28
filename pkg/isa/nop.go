@@ -26,7 +26,7 @@ func (i *NOP) Decode(inst uint32) Instruction {
 }
 
 func (i *NOP) String() string {
-	return fmt.Sprintf("name: %s",
+	return fmt.Sprintf("%s",
 		i.InstructionMeta.Name)
 }
 

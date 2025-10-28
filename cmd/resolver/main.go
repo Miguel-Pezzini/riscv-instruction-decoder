@@ -20,7 +20,28 @@ func main() {
 	// instructionsFromHexFile := DecodeFromFile(HEX_INSTRUCTION_FILE_NAME, FORMAT_HEX)
 	// DecodeInstructionFromUInt32(instructionsFromHexFile)
 
+	executions := []struct {
+		forwarding           bool
+		dataHazardControl    bool
+		controlHazardControl bool
+		fileName             string
+	}{
+		{false, true, false, "../../pkg/files/output_data_no_forwarding.txt"},
+		{true, true, false, "../../pkg/files/output_data_forwarding.txt"},
+		{false, false, true, "../../pkg/files/output_control_no_forwarding.txt"},
+		{true, false, true, "../../pkg/files/output_control_forwarding.txt"},
+		{false, true, true, "../../pkg/files/output_integrated_no_forwarding.txt"},
+		{true, true, true, "../../pkg/files/output_integrated_forwarding.txt"},
+	}
+
 	decodedInstructions := decoder.DecodeInstructionFromUInt32(instructionsFromBinaryFile)
-	forwarding := false
-	runner.Run(decodedInstructions, forwarding)
+	for _, exec := range executions {
+		runner.Run(
+			decodedInstructions,
+			exec.forwarding,
+			exec.dataHazardControl,
+			exec.controlHazardControl,
+			exec.fileName,
+		)
+	}
 }

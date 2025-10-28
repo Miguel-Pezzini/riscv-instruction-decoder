@@ -27,14 +27,15 @@ func (r *Type) Decode(inst uint32) isa.Instruction {
 }
 
 func (r *Type) String() string {
-	return fmt.Sprintf("formato = R {opcode=%02X, rd=%d, funct3=%d, rs1=%d, rs2=%d, funct7=%d}",
-		r.Opcode, r.Rd, r.Funct3, r.Rs1, r.Rs2, r.Funct7)
+	return fmt.Sprintf("%s {opcode=%02X, rd=%d, funct3=%d, rs1=%d, rs2=%d, funct7=%d}",
+		r.InstructionMeta.Name, r.Opcode, r.Rd, r.Funct3, r.Rs1, r.Rs2, r.Funct7)
 }
-
 func (r *Type) findInstruction(funct3 uint8, funct7 uint8) isa.Instruction {
 	switch {
 	case funct7 == 0x00 && funct3 == 0x00:
-		return &ADD{Type: *r}
+		return newADD(*r)
+	case funct7 == 0x20 && funct3 == 0x00:
+		return newSUB(*r)
 	}
 
 	return r

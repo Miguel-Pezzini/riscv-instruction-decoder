@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"os"
 	"riscv-instruction-encoder/pkg/decoder"
 	"riscv-instruction-encoder/pkg/runner"
 )
@@ -16,9 +18,30 @@ const (
 )
 
 func main() {
-	instructionsFromBinaryFile := decoder.DecodeFromFile(BIN_INSTRUCTION_FILE_NAME, FORMAT_BIN)
-	// instructionsFromHexFile := DecodeFromFile(HEX_INSTRUCTION_FILE_NAME, FORMAT_HEX)
-	// DecodeInstructionFromUInt32(instructionsFromHexFile)
+	var formatChoice string
+	fmt.Println("Select instruction format to decode (bin / hex):")
+	_, err := fmt.Scanln(&formatChoice)
+	if err != nil {
+		fmt.Println("Invalid input. Defaulting to hex format.")
+		os.Exit(1)
+	}
+
+	var format string
+	var fileName string
+
+	switch formatChoice {
+	case "bin", "BIN":
+		format = FORMAT_BIN
+		fileName = BIN_INSTRUCTION_FILE_NAME
+	case "hex", "HEX":
+		format = FORMAT_HEX
+		fileName = HEX_INSTRUCTION_FILE_NAME
+	default:
+		fmt.Println("Invalid format choice. Please select 'bin' or 'hex'.")
+		os.Exit(1)
+	}
+
+	encodedInstructions := decoder.DecodeFromFile(fileName, format)
 
 	executions := []struct {
 		forwarding           bool
@@ -34,7 +57,7 @@ func main() {
 		{true, true, true, "../../pkg/files/output_integrated_forwarding.txt"},
 	}
 
-	decodedInstructions := decoder.DecodeInstructionFromUInt32(instructionsFromBinaryFile)
+	decodedInstructions := decoder.DecodeInstructionFromUInt32(encodedInstructions)
 	for _, exec := range executions {
 		runner.Run(
 			decodedInstructions,

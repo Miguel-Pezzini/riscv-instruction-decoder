@@ -108,7 +108,9 @@ func (p *Pipeline) Step() {
 	}
 
 	nextInstruction, index := p.getNextInstruction()
+
 	if nextInstruction != nil {
+		nextInstruction.CurrentStage = int(isa.IF)
 		if (hazard.HasDataHazard(*nextInstruction, p.executingInstructions, p.forwarding) && p.data_hazard) || (hazard.HasControlHazard(*nextInstruction, p.executingInstructions, p.forwarding) && p.control_hazard) {
 			p.insertNOPAt(index)
 		} else {

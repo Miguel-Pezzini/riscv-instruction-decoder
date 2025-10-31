@@ -13,39 +13,50 @@ PC	Instruction
 0x00000028	ADDI {opcode=13, rd=11, funct3=0, rs1=7, imm=10}
 0x0000002C	ADDI {opcode=13, rd=12, funct3=0, rs1=8, imm=5}
 0x00000030	NOP
-0x00000034	ADD {opcode=33, rd=13, funct3=0, rs1=11, rs2=12, funct7=0}
-0x00000038	NOP
-0x0000003C	SUB {opcode=33, rd=14, funct3=0, rs1=13, rs2=9, funct7=32}
+0x00000034	NOP
+0x00000038	ADD {opcode=33, rd=13, funct3=0, rs1=11, rs2=12, funct7=0}
+0x0000003C	NOP
 0x00000040	NOP
-0x00000044	ADDI {opcode=13, rd=15, funct3=0, rs1=14, imm=3}
+0x00000044	SUB {opcode=33, rd=14, funct3=0, rs1=13, rs2=9, funct7=32}
 0x00000048	NOP
-0x0000004C	ADDI {opcode=13, rd=16, funct3=0, rs1=15, imm=2}
-0x00000050	NOP
-0x00000054	ADD {opcode=33, rd=17, funct3=0, rs1=16, rs2=10, funct7=0}
+0x0000004C	NOP
+0x00000050	ADDI {opcode=13, rd=15, funct3=0, rs1=14, imm=3}
+0x00000054	NOP
 0x00000058	NOP
-0x0000005C	SUB {opcode=33, rd=18, funct3=0, rs1=17, rs2=1, funct7=32}
-0x00000060	BEQ {opcode=63, funct3=0, rs1=1, rs2=2, imm=8}
-0x00000064	ADDI {opcode=13, rd=19, funct3=0, rs1=0, imm=1}
-0x00000068	ADDI {opcode=13, rd=20, funct3=0, rs1=0, imm=2}
-0x0000006C	BNE {opcode=63, funct3=1, rs1=3, rs2=4, imm=8}
-0x00000070	ADDI {opcode=13, rd=21, funct3=0, rs1=0, imm=3}
-0x00000074	ADDI {opcode=13, rd=22, funct3=0, rs1=0, imm=4}
-0x00000078	BEQ {opcode=63, funct3=0, rs1=5, rs2=6, imm=8}
-0x0000007C	ADDI {opcode=13, rd=23, funct3=0, rs1=0, imm=5}
-0x00000080	ADDI {opcode=13, rd=24, funct3=0, rs1=0, imm=6}
-0x00000084	ADD {opcode=33, rd=25, funct3=0, rs1=20, rs2=22, funct7=0}
-0x00000088	SUB {opcode=33, rd=26, funct3=0, rs1=24, rs2=21, funct7=32}
-0x0000008C	ADDI {opcode=13, rd=27, funct3=0, rs1=25, imm=7}
-0x00000090	ADDI {opcode=13, rd=28, funct3=0, rs1=26, imm=8}
-0x00000094	NOP
-0x00000098	ADD {opcode=33, rd=29, funct3=0, rs1=27, rs2=28, funct7=0}
-0x0000009C	NOP
-0x000000A0	SUB {opcode=33, rd=30, funct3=0, rs1=29, rs2=19, funct7=32}
-0x000000A4	JAL {opcode=6F, rd=0, imm=2048}
-0x000000A8	NOP
-0x000000AC	ADDI {opcode=13, rd=31, funct3=0, rs1=0, imm=99}
-0x000000B0	ADDI {opcode=13, rd=1, funct3=0, rs1=0, imm=0}
+0x0000005C	ADDI {opcode=13, rd=16, funct3=0, rs1=15, imm=2}
+0x00000060	NOP
+0x00000064	NOP
+0x00000068	ADD {opcode=33, rd=17, funct3=0, rs1=16, rs2=10, funct7=0}
+0x0000006C	NOP
+0x00000070	NOP
+0x00000074	SUB {opcode=33, rd=18, funct3=0, rs1=17, rs2=1, funct7=32}
+0x00000078	BEQ {opcode=63, funct3=0, rs1=1, rs2=2, imm=8}
+0x0000007C	ADDI {opcode=13, rd=19, funct3=0, rs1=0, imm=1}
+0x00000080	ADDI {opcode=13, rd=20, funct3=0, rs1=0, imm=2}
+0x00000084	BNE {opcode=63, funct3=1, rs1=3, rs2=4, imm=8}
+0x00000088	ADDI {opcode=13, rd=21, funct3=0, rs1=0, imm=3}
+0x0000008C	ADDI {opcode=13, rd=22, funct3=0, rs1=0, imm=4}
+0x00000090	BEQ {opcode=63, funct3=0, rs1=5, rs2=6, imm=8}
+0x00000094	ADDI {opcode=13, rd=23, funct3=0, rs1=0, imm=5}
+0x00000098	ADDI {opcode=13, rd=24, funct3=0, rs1=0, imm=6}
+0x0000009C	ADD {opcode=33, rd=25, funct3=0, rs1=20, rs2=22, funct7=0}
+0x000000A0	NOP
+0x000000A4	SUB {opcode=33, rd=26, funct3=0, rs1=24, rs2=21, funct7=32}
+0x000000A8	ADDI {opcode=13, rd=27, funct3=0, rs1=25, imm=7}
+0x000000AC	NOP
+0x000000B0	ADDI {opcode=13, rd=28, funct3=0, rs1=26, imm=8}
 0x000000B4	NOP
-0x000000B8	ADDI {opcode=13, rd=0, funct3=0, rs1=0, imm=0}
-0x000000BC	NOP
-0x000000C0	JAL {opcode=6F, rd=0, imm=1048063}
+0x000000B8	NOP
+0x000000BC	ADD {opcode=33, rd=29, funct3=0, rs1=27, rs2=28, funct7=0}
+0x000000C0	NOP
+0x000000C4	NOP
+0x000000C8	SUB {opcode=33, rd=30, funct3=0, rs1=29, rs2=19, funct7=32}
+0x000000CC	JAL {opcode=6F, rd=0, imm=2048}
+0x000000D0	NOP
+0x000000D4	NOP
+0x000000D8	ADDI {opcode=13, rd=31, funct3=0, rs1=0, imm=99}
+0x000000DC	ADDI {opcode=13, rd=1, funct3=0, rs1=0, imm=0}
+0x000000E0	NOP
+0x000000E4	ADDI {opcode=13, rd=0, funct3=0, rs1=0, imm=0}
+0x000000E8	NOP
+0x000000EC	JAL {opcode=6F, rd=0, imm=1048063}

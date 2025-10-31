@@ -42,53 +42,43 @@ func (b *Type) Decode(inst uint32) isa.Instruction {
 	return b.findInstruction()
 }
 
-func (b *Type) getInstructionName() string {
-	switch b.OpCode {
-	case BRANCH:
-		switch b.Funct3 {
-		case FUNCT3_BLT:
-			return "BLT"
-		case FUNCT3_BGE:
-			return "BGE"
-		case FUNCT3_BEQ:
-			return "BEQ"
-		case FUNCT3_BNE:
-			return "BNE"
-		}
-	}
-	return "UNKNOWN_B"
-}
-
 func (b *Type) findInstruction() isa.Instruction {
 	switch b.OpCode {
 	case BRANCH:
-		return newBLT(*b) // default para BLT, adapte se quiser outros
+		switch b.Funct3 {
+		case FUNCT3_BEQ:
+			return newBEQ(*b)
+		case FUNCT3_BLT:
+			return newBLT(*b)
+		case FUNCT3_BNE:
+			return newBNE(*b)
+		}
 	}
 	return b
 }
 
 func (b *Type) String() string {
 	return fmt.Sprintf("%s {opcode=%02X, funct3=%d, rs1=%d, rs2=%d, imm=%d}",
-		b.getInstructionName(), b.OpCode, b.Funct3, b.Rs1, b.Rs2, b.Imm)
+		b.InstructionMeta.Name, b.OpCode, b.Funct3, b.Rs1, b.Rs2, b.Imm)
 }
 
 // Pipeline stages
 func (b *Type) ExecuteFetchInstruction() {
-	fmt.Printf("[IF ] Fetching instruction: %s\n", b.getInstructionName())
+	fmt.Printf("[IF ] Fetching instruction: %s\n", b.InstructionMeta.Name)
 }
 
 func (b *Type) ExecuteDecodeInstruction() {
-	fmt.Printf("[ID ] Decoding instruction: %s\n", b.getInstructionName())
+	fmt.Printf("[ID ] Decoding instruction: %s\n", b.InstructionMeta.Name)
 }
 
 func (b *Type) ExecuteOperation() {
-	fmt.Printf("[EX ] Executing operation for instruction: %s\n", b.getInstructionName())
+	fmt.Printf("[EX ] Executing operation for instruction: %s\n", b.InstructionMeta.Name)
 }
 
 func (b *Type) ExecuteAccessOperand() {
-	fmt.Printf("[MEM] Accessing operands/memory for instruction: %s\n", b.getInstructionName())
+	fmt.Printf("[MEM] Accessing operands/memory for instruction: %s\n", b.InstructionMeta.Name)
 }
 
 func (b *Type) ExecuteWriteBack() {
-	fmt.Printf("[WB ] Writing back result of instruction: %s\n", b.getInstructionName())
+	fmt.Printf("[WB ] Writing back result of instruction: %s\n", b.InstructionMeta.Name)
 }

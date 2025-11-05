@@ -36,7 +36,7 @@ PC	Instruction
 0x00000084	JAL {opcode=6F, rd=0, imm=2048}
 0x00000088	ADDI {opcode=13, rd=31, funct3=0, rs1=0, imm=99}
 0x0000008C	ADDI {opcode=13, rd=1, funct3=0, rs1=0, imm=0}
-0x00000090	NOP
-0x00000094	ADDI {opcode=13, rd=0, funct3=0, rs1=0, imm=0}
-0x00000098	NOP
-0x0000009C	JAL {opcode=6F, rd=0, imm=1048063}
+0x00000000	NOP
+0x00000090	ADDI {opcode=13, rd=0, funct3=0, rs1=0, imm=0}
+0x00000000	NOP
+0x00000094	JAL {opcode=6F, rd=0, imm=1048063}

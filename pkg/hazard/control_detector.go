@@ -14,7 +14,7 @@ func HasControlHazard(currentInstruction isa.PipelineInstruction, executing []*i
 
 func hasUnresolvedBranchHazard(currentInstruction isa.PipelineInstruction, previousInstruction isa.PipelineInstruction) bool {
 	prevMeta := previousInstruction.Instruction.GetMeta()
-	if (prevMeta.IsBranch || prevMeta.IsJump) && !previousInstruction.HasCompleted && previousInstruction.CurrentStage <= int(isa.EX) {
+	if (prevMeta.IsBranch || prevMeta.IsJump) && !previousInstruction.HasCompleted && previousInstruction.CurrentStage < int(isa.WB) {
 		return true
 	}
 

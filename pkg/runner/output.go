@@ -15,7 +15,7 @@ func (p *Pipeline) writeFile() {
 	_, _ = file.WriteString("PC\tInstruction\n")
 	_, _ = file.WriteString("===============================\n")
 	for _, instr := range p.Instructions {
-		line := fmt.Sprintf("0x%08X\t%s\n", instr.PC, instr.Instruction.String())
+		line := fmt.Sprintf("0x%08X\t%s\n", instr.OriginalPC, instr.Instruction.String())
 		_, err := file.WriteString(line)
 		if err != nil {
 			fmt.Printf("Error to write in file %s: %v\n", p.file_path, err)
